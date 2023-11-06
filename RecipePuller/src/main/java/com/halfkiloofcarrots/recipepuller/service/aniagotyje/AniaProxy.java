@@ -1,10 +1,9 @@
-package com.halfkiloofcarrots.recipepuller.service;
+package com.halfkiloofcarrots.recipepuller.service.aniagotyje;
 import com.halfkiloofcarrots.recipepuller.dto.RecipeDataDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-//https://api.aniagotuje.pl/client/post/zeberka-w-kapuscie
 @FeignClient(value = "ania-recipe-client")
 public interface AniaProxy {
 
