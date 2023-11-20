@@ -1,7 +1,7 @@
 package com.halfkiloofcarrots.recipepuller.service.aniagotyje;
 
 
-import com.halfkiloofcarrots.recipepuller.dto.RecipeDataDTO;
+import com.halfkiloofcarrots.recipepuller.model.dto.RecipeDataDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

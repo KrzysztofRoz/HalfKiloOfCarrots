@@ -1,5 +1,6 @@
 package com.halfkiloofcarrots.recipepuller.service.aniagotyje;
 
+import com.halfkiloofcarrots.recipepuller.model.dto.RecipeData;
 import org.apache.logging.log4j.util.Strings;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,32 +15,29 @@ import java.util.stream.Collectors;
 
 public class AniaHtmlParser {
 
-    public String parse(String html) {
-        String fixedHtml = html.replaceAll("\\\"", "\"");
+    public RecipeData parse(String html) {
+        String fixedHtml = html.replace("\\\"", "\"");
         Document parsedDocument = Jsoup.parse(fixedHtml);
         List<String> ingredients = parseIngredients(parsedDocument.getElementsByAttributeValue("itemprop", "recipeIngredient"));
         Map<String, String> basicInfoMap = parseBasicInfo(parsedDocument);
         String methodology = parseMethodology(parsedDocument);
         String content = parseContent(parsedDocument);
-        return null;
-    }
-
-    private String parseContent(Document parsedDocument) {
-        String text = parsedDocument.text();
-        String h2 = parsedDocument.getElementsByTag("h2").text();
-        String h3 = parsedDocument.getElementsByTag("h3").text();
-        String[] split = text.split(h2);
-        String[] split2 = split[1].split(h3);
-        return split2[0];
+        return RecipeData.builder()
+                .ingredients(ingredients)
+                .basicInfoMap(basicInfoMap)
+                .methodology(methodology)
+                .content(content)
+                .build();
     }
 
     private String parseMethodology(Document parsedDocument) {
-        String text = parsedDocument.text();
-        String h2 = parsedDocument.getElementsByTag("h2").text();
-        String h3 = parsedDocument.getElementsByTag("h3").text();
-        String[] split = text.split(h2);
-        String[] split2 = split[1].split(h3);
-        return split2[1];
+        String[] methodologyAndContentArray = parseMethodologyAndContentFromHtml(parsedDocument);
+        return Jsoup.parse(methodologyAndContentArray[0]).text();
+    }
+
+    private String parseContent(Document parsedDocument) {
+        String[] methodologyAndContentArray = parseMethodologyAndContentFromHtml(parsedDocument);
+        return  Jsoup.parse(methodologyAndContentArray[1]).text();
     }
 
     private Map<String, String> parseBasicInfo(Document parsedDocument) {
@@ -65,5 +63,13 @@ public class AniaHtmlParser {
         String key = keyAndValue[0].trim();
         String value = keyAndValue[1].trim();
         return Map.entry(key, value);
+    }
+
+    private String[] parseMethodologyAndContentFromHtml(Document parsedDocument) {
+        String html = parsedDocument.toString();
+        String h2 = parsedDocument.getElementsByTag("h2").toString();
+        String h3 = parsedDocument.getElementsByTag("h3").toString();
+        String methodologyAndContentHtml = html.split(h2)[1];
+        return methodologyAndContentHtml.split(h3);
     }
 }

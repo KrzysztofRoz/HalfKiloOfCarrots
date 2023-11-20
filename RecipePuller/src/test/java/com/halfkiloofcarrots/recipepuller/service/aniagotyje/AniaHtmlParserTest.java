@@ -1,5 +1,7 @@
 package com.halfkiloofcarrots.recipepuller.service.aniagotyje;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.halfkiloofcarrots.recipepuller.model.dto.RecipeData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,16 +20,19 @@ class AniaHtmlParserTest {
 
     @InjectMocks
     private AniaHtmlParser uut;
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Test
     void shouldParseHtml() throws IOException {
         // given
-        String html = new String(Files.readAllBytes(Paths.get("src/test/resources/zeberka-w-kapuscie.html")));
+        String html = new String(Files.readAllBytes(Paths.get("src/test/resources/weganskie-bezy.html")));
 
         // when
-        uut.parse(html);
+        RecipeData parse = uut.parse(html);
+        String json = mapper.writeValueAsString(parse);
 
         // then
 
+        assertEquals(1,1);
     }
 }
