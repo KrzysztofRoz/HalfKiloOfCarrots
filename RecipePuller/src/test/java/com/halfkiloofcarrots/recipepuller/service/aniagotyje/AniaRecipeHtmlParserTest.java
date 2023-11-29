@@ -5,10 +5,8 @@ import com.halfkiloofcarrots.recipepuller.model.dto.RecipeData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -16,10 +14,10 @@ import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-class AniaHtmlParserTest {
+class AniaRecipeHtmlParserTest {
 
     @InjectMocks
-    private AniaHtmlParser uut;
+    private AniaRecipeHtmlParser uut;
     private ObjectMapper mapper = new ObjectMapper();
 
     @Test
