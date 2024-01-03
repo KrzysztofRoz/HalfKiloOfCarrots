@@ -51,18 +51,6 @@ public class AniaScheduler {
         log.info("Tag list: {}", slugsJson);
     }
 
-    @Scheduled(fixedDelay = 10000)
-    public void fetchUpdatedRecipes() throws IOException {
-        String slugsString = new String(Files.readAllBytes(Paths.get("C:\\Projects\\HalfKiloOfCarrots\\HalfKiloOfCarrots\\RecipePuller\\src\\main\\resources\\SlugsJson.json")));
-        Set<String> recipes = objectMapper.readValue(slugsString, new TypeReference<Set<String>>() {
-        });
-//        log.info("" + recipes);
-        List<RecipeData> allRecipes = getAllRecipes(recipes);
-        String recipesJson = objectMapper.writeValueAsString(allRecipes);
-        //TODO fix methodology - make it optional (breaks on kotleciki-z-sezamem-i-mizuna)
-        log.info("" + recipesJson);
-    }
-
     private List<TagDto> fetchSlugs(String tag) {
         Integer pageNumber = 0;
         List<TagDto> tagsList = new ArrayList<>();
@@ -77,22 +65,9 @@ public class AniaScheduler {
         return tagsList;
     }
 
-    private List<RecipeData> getAllRecipes(Set<String> slugsSet) {
-        int setLimiter = 10;
-        return slugsSet
-                .stream()
-                .limit(setLimiter)
-                .map(s -> {
-                    sleep();
-                    return proxy.getRecipe(s);
-                })
-                .map(dto -> parser.parse(dto.body()))
-                .toList();
-    }
-
     private static void sleep() {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

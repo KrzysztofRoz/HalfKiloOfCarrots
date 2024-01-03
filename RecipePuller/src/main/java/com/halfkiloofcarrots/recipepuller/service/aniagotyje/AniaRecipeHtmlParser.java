@@ -34,12 +34,20 @@ public class AniaRecipeHtmlParser {
 
     private String parseMethodology(Document parsedDocument) {
         String[] methodologyAndContentArray = parseMethodologyAndContentFromHtml(parsedDocument);
-        return Jsoup.parse(methodologyAndContentArray[0]).text();
+        if(methodologyAndContentArray.length < 2) {
+            return "";
+        } else {
+            return Jsoup.parse(methodologyAndContentArray[0]).text();
+        }
     }
 
     private String parseContent(Document parsedDocument) {
         String[] methodologyAndContentArray = parseMethodologyAndContentFromHtml(parsedDocument);
-        return  Jsoup.parse(methodologyAndContentArray[1]).text();
+        if(methodologyAndContentArray.length < 2) {
+            return "";
+        } else {
+            return Jsoup.parse(methodologyAndContentArray[1]).text();
+        }
     }
 
     private Map<String, String> parseBasicInfo(Document parsedDocument) {
@@ -71,7 +79,10 @@ public class AniaRecipeHtmlParser {
         String html = parsedDocument.toString();
         String h2 = parsedDocument.getElementsByTag("h2").toString();
         String h3 = parsedDocument.getElementsByTag("h3").toString();
-        String methodologyAndContentHtml = html.split(h2)[1];
-        return methodologyAndContentHtml.split(h3);
+        String[] methodologyAndContentHtml = html.split(h2);
+        if (methodologyAndContentHtml.length < 2) {
+            return new String[]{};
+        }
+        return methodologyAndContentHtml[1].split(h3);
     }
 }
