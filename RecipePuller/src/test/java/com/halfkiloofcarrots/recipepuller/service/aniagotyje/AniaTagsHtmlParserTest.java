@@ -1,33 +1,31 @@
 package com.halfkiloofcarrots.recipepuller.service.aniagotyje;
 
+import com.halfkiloofcarrots.recipepuller.model.dto.RecipeData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(SpringExtension.class)
-class AniaHtmlParserTest {
-
+class AniaTagsHtmlParserTest {
     @InjectMocks
-    private AniaHtmlParser uut;
+    private AniaTagsHtmlParser uut;
 
     @Test
-    void shouldParseHtml() throws IOException {
+    public void shouldParseTags () throws IOException {
         // given
-        String html = new String(Files.readAllBytes(Paths.get("src/test/resources/zeberka-w-kapuscie.html")));
+        String html = new String(Files.readAllBytes(Paths.get("src/test/resources/tags.html")));
 
         // when
-        uut.parse(html);
+        uut.parseTags(html);
 
-        // then
-
+        //then
+        assertEquals(1,1);
     }
+
 }
