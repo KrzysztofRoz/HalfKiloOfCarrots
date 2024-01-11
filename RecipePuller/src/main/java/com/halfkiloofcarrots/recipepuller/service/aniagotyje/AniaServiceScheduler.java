@@ -31,7 +31,7 @@ public class AniaServiceScheduler {
 
     @Scheduled(fixedDelay = 10000000)
     public void fetchUpdatedRecipes() throws IOException {
-        String slugsString = new String(Files.readAllBytes(Paths.get("C:\\Users\\Brungold\\Desktop\\JAVA\\HalfKiloOfCarrots\\RecipePuller\\src\\main\\resources\\SlugsJson.json")));
+        String slugsString = new String(Files.readAllBytes(Paths.get("/home/krzysztof/Repos/HalfKiloOfCarrots/RecipePuller/src/main/resources/SlugsJson.json")));
         Set<String> recipes = objectMapper.readValue(slugsString, new TypeReference<Set<String>>() {
         });
 //        log.info("" + recipes);
@@ -52,7 +52,7 @@ public class AniaServiceScheduler {
                 })
                 .map(dto -> {
                     try {
-                        return parser.parse(dto.body());
+                        return parser.parse(dto);
                     } catch (RuntimeException exception) {
                         exception.printStackTrace();
                         errorSlugs.add(dto.slug());

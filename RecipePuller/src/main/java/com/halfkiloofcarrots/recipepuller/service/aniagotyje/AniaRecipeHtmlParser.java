@@ -1,6 +1,7 @@
 package com.halfkiloofcarrots.recipepuller.service.aniagotyje;
 
 import com.halfkiloofcarrots.recipepuller.model.dto.RecipeData;
+import com.halfkiloofcarrots.recipepuller.model.dto.RecipeDataDTO;
 import org.apache.logging.log4j.util.Strings;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -8,17 +9,14 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class AniaRecipeHtmlParser {
 
-    public RecipeData parse(String html) {
-        String fixedHtml = html.replace("\\\"", "\"");
+    public RecipeData parse(RecipeDataDTO DTO) {
+        String fixedHtml = DTO.body().replace("\\\"", "\"");
         Document parsedDocument = Jsoup.parse(fixedHtml);
         List<String> ingredients = parseIngredients(parsedDocument.getElementsByAttributeValue("itemprop", "recipeIngredient"));
         Map<String, String> basicInfoMap = parseBasicInfo(parsedDocument);
@@ -51,7 +49,11 @@ public class AniaRecipeHtmlParser {
     }
 
     private Map<String, String> parseBasicInfo(Document parsedDocument) {
-        return Arrays.stream(parseIngredients(parsedDocument.getElementsByClass("recipe-info"))
+        List<String> ingredients = parseIngredients(parsedDocument.getElementsByClass("recipe-info"));
+        if(ingredients.isEmpty()){
+            return Collections.emptyMap();
+        }
+        return Arrays.stream(ingredients
                         .get(0)
                         .split("\\\\n"))
                 .filter(Objects::nonNull)
