@@ -23,6 +23,7 @@ public class AniaRecipeHtmlParser {
         String methodology = parseMethodology(parsedDocument);
         String content = parseContent(parsedDocument);
         return RecipeData.builder()
+                .slug(DTO.slug())
                 .ingredients(ingredients)
                 .basicInfoMap(basicInfoMap)
                 .methodology(methodology)
@@ -32,7 +33,7 @@ public class AniaRecipeHtmlParser {
 
     private String parseMethodology(Document parsedDocument) {
         String[] methodologyAndContentArray = parseMethodologyAndContentFromHtml(parsedDocument);
-        if(methodologyAndContentArray.length < 2) {
+        if (methodologyAndContentArray.length < 2) {
             return "";
         } else {
             return Jsoup.parse(methodologyAndContentArray[0]).text();
@@ -41,7 +42,7 @@ public class AniaRecipeHtmlParser {
 
     private String parseContent(Document parsedDocument) {
         String[] methodologyAndContentArray = parseMethodologyAndContentFromHtml(parsedDocument);
-        if(methodologyAndContentArray.length < 2) {
+        if (methodologyAndContentArray.length < 2) {
             return "";
         } else {
             return Jsoup.parse(methodologyAndContentArray[1]).text();
@@ -49,13 +50,11 @@ public class AniaRecipeHtmlParser {
     }
 
     private Map<String, String> parseBasicInfo(Document parsedDocument) {
-        List<String> ingredients = parseIngredients(parsedDocument.getElementsByClass("recipe-info"));
-        if(ingredients.isEmpty()){
+        List<String> ingredients = Arrays.asList(Jsoup.parse(parsedDocument.getElementsByClass("recipe-info").toString().replace("<br>", "#_#")).getElementsByClass("recipe-info").text().split("#_#"));
+        if (ingredients.isEmpty()) {
             return Collections.emptyMap();
         }
-        return Arrays.stream(ingredients
-                        .get(0)
-                        .split("\\\\n"))
+        return ingredients.stream()
                 .filter(Objects::nonNull)
                 .filter(value -> !Strings.isBlank(value))
                 .map(String::trim)
@@ -70,6 +69,7 @@ public class AniaRecipeHtmlParser {
                 .toList();
     }
 
+    // TODO null30 minut
     private Map.Entry<String, String> splitKeyAndValue(String recipeInfoElement) {
         String[] keyAndValue = recipeInfoElement.split(":");
         String key = keyAndValue[0].trim();
