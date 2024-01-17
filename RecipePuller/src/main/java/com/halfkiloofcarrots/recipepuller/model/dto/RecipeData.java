@@ -14,6 +14,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class RecipeData {
 
+    private String slug;
     private List<String> ingredients;
     private Map<String, String> basicInfoMap;
     private String methodology;
