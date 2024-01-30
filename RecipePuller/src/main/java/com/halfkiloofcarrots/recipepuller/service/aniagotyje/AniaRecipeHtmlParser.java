@@ -90,7 +90,7 @@ public class AniaRecipeHtmlParser {
                 .map(this::parseSingleContentStep)
                 .toList();
     }
-    
+
     // parsedDocument.getElementsByClass("step").get(0).getElementsByTag("img").get(0).attr("src")
 
     private RecipeContentStep parseSingleContentStep(Element element) {
