@@ -18,5 +18,5 @@ public class RecipeData {
     private List<String> ingredients;
     private Map<String, String> basicInfoMap;
     private String methodology;
-    private String content;
+    private List<RecipeContentStep> contentSteps;
 }

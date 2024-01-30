@@ -1,5 +1,6 @@
 package com.halfkiloofcarrots.recipepuller.service.aniagotyje;
 
+import com.halfkiloofcarrots.recipepuller.model.dto.RecipeContentStep;
 import com.halfkiloofcarrots.recipepuller.model.dto.RecipeData;
 import com.halfkiloofcarrots.recipepuller.model.dto.RecipeDataDTO;
 import org.apache.logging.log4j.util.Strings;
@@ -8,6 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,13 +23,13 @@ public class AniaRecipeHtmlParser {
         List<String> ingredients = parseIngredients(parsedDocument.getElementsByAttributeValue("itemprop", "recipeIngredient"));
         Map<String, String> basicInfoMap = parseBasicInfo(parsedDocument);
         String methodology = parseMethodology(parsedDocument);
-        String content = parseContent(parsedDocument);
+        List<RecipeContentStep> contentSteps = parseContentSteps(parsedDocument);
         return RecipeData.builder()
                 .slug(DTO.slug())
                 .ingredients(ingredients)
                 .basicInfoMap(basicInfoMap)
                 .methodology(methodology)
-                .content(content)
+                .contentSteps(contentSteps)
                 .build();
     }
 
@@ -40,13 +42,12 @@ public class AniaRecipeHtmlParser {
         }
     }
 
-    private String parseContent(Document parsedDocument) {
-        String[] methodologyAndContentArray = parseMethodologyAndContentFromHtml(parsedDocument);
-        if (methodologyAndContentArray.length < 2) {
-            return "";
-        } else {
-            return Jsoup.parse(methodologyAndContentArray[1]).text();
+    private List<RecipeContentStep> parseContentSteps(Document parsedDocument) {
+        List<RecipeContentStep> parsedNewContent = parseNewContent(parsedDocument);
+        if (!CollectionUtils.isEmpty(parsedNewContent)) {
+            return parsedNewContent;
         }
+        return parseOldContent(parsedDocument);
     }
 
     private Map<String, String> parseBasicInfo(Document parsedDocument) {
@@ -59,6 +60,7 @@ public class AniaRecipeHtmlParser {
                 .filter(value -> !Strings.isBlank(value))
                 .map(String::trim)
                 .map(this::splitKeyAndValue)
+                .filter(entry -> !"Error".equals(entry.getKey()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
@@ -69,14 +71,47 @@ public class AniaRecipeHtmlParser {
                 .toList();
     }
 
-    // TODO null30 minut
     private Map.Entry<String, String> splitKeyAndValue(String recipeInfoElement) {
         String[] keyAndValue = recipeInfoElement.split(":");
+        if (keyAndValue.length < 2) {
+            return Map.entry("Error", recipeInfoElement);
+        }
         String key = keyAndValue[0].trim();
         String value = keyAndValue[1].trim();
         return Map.entry(key, value);
     }
 
+    private List<RecipeContentStep> parseNewContent(Document parsedDocument) {
+        if (parsedDocument.getElementsByClass("steps").isEmpty()) {
+            return Collections.emptyList();
+        }
+        return parsedDocument.getElementsByClass("step")
+                .stream()
+                .map(this::parseSingleContentStep)
+                .toList();
+    }
+
+    private RecipeContentStep parseSingleContentStep(Element element) {
+        String title = element.getElementsByClass("step-name").first().text();
+        String instruction = element.getElementsByClass("step-text").first().text();
+        return RecipeContentStep.builder()
+                .title(title)
+                .instruction(instruction)
+                .build();
+    }
+
+    private List<RecipeContentStep> parseOldContent(Document parsedDocument) {
+        String[] methodologyAndContentArray = parseMethodologyAndContentFromHtml(parsedDocument);
+        if (methodologyAndContentArray.length < 2) {
+            return Collections.emptyList();
+        } else {
+            String instruction = Jsoup.parse(methodologyAndContentArray[1]).text();
+            RecipeContentStep contentStep = RecipeContentStep.builder().instruction(instruction).build();
+            return Collections.singletonList(contentStep);
+        }
+    }
+
+    //TODO handle content in html without h3 tags (pasztet-jaglany-z-warzywami)
     private String[] parseMethodologyAndContentFromHtml(Document parsedDocument) {
         String html = parsedDocument.toString();
         String h2 = parsedDocument.getElementsByTag("h2").toString();
