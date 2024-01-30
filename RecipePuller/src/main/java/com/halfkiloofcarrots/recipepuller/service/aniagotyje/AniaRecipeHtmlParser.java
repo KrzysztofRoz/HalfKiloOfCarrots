@@ -90,14 +90,24 @@ public class AniaRecipeHtmlParser {
                 .map(this::parseSingleContentStep)
                 .toList();
     }
+    
+    // parsedDocument.getElementsByClass("step").get(0).getElementsByTag("img").get(0).attr("src")
 
     private RecipeContentStep parseSingleContentStep(Element element) {
         String title = element.getElementsByClass("step-name").first().text();
         String instruction = element.getElementsByClass("step-text").first().text();
+        List<String> images = parseImages(element);
         return RecipeContentStep.builder()
                 .title(title)
                 .instruction(instruction)
+                .images(images)
                 .build();
+    }
+
+    private List<String> parseImages(Element element) {
+        return element.getElementsByTag("img").stream()
+                .map(e -> e.attr("src"))
+                .toList();
     }
 
     private List<RecipeContentStep> parseOldContent(Document parsedDocument) {
