@@ -24,7 +24,7 @@ class AniaRecipeHtmlParserTest {
     @Test
     void shouldParseHtml() throws IOException {
         // given
-        String html = new String(Files.readAllBytes(Paths.get("src/test/resources/weganskie-bezy.html")));
+        String html = new String(Files.readAllBytes(Paths.get("src/test/resources/kurczak-po-koreansku.html")));
         RecipeDataDTO dto = new RecipeDataDTO("title",html,"slug");
 
         // when
