@@ -2,6 +2,7 @@ package com.halfkiloofcarrots.recipepuller.service.aniagotuje.parser;
 
 import com.halfkiloofcarrots.recipepuller.model.dto.RecipeContentStep;
 import com.halfkiloofcarrots.recipepuller.model.dto.RecipeData;
+import com.halfkiloofcarrots.recipepuller.model.dto.RecipeHeader;
 import com.halfkiloofcarrots.recipepuller.model.dto.record.RecipeDataDTO;
 import org.apache.logging.log4j.util.Strings;
 import org.jsoup.Jsoup;
@@ -20,17 +21,34 @@ public class AniaRecipeHtmlParser {
     public RecipeData parse(RecipeDataDTO DTO) {
         String fixedHtml = DTO.body().replace("\\\"", "\"");
         Document parsedDocument = Jsoup.parse(fixedHtml);
+        RecipeHeader header = parseHeader(parsedDocument, DTO.title());
         List<String> ingredients = parseIngredients(parsedDocument.getElementsByAttributeValue("itemprop", "recipeIngredient"));
         Map<String, String> basicInfoMap = parseBasicInfo(parsedDocument);
         String methodology = parseMethodology(parsedDocument);
         List<RecipeContentStep> contentSteps = parseContentSteps(parsedDocument);
         return RecipeData.builder()
                 .slug(DTO.slug())
+                .header(header)
                 .ingredients(ingredients)
                 .basicInfoMap(basicInfoMap)
                 .methodology(methodology)
                 .contentSteps(contentSteps)
                 .build();
+    }
+
+    private RecipeHeader parseHeader(Document parsedDocument, String title) {
+        List<String> headerImages = parseHeaderImages(parsedDocument);
+        return RecipeHeader.builder()
+                .title(title)
+                .images(headerImages)
+                .build();
+    }
+
+    private List<String> parseHeaderImages(Document parsedDocument) {
+       return parsedDocument.getElementsByTag("h2").stream()
+                .map(this::parseImages)
+                .flatMap(Collection::stream)
+                .toList();
     }
 
     private String parseMethodology(Document parsedDocument) {

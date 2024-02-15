@@ -15,6 +15,7 @@ import java.util.Map;
 public class RecipeData {
 
     private String slug;
+    private RecipeHeader header;
     private List<String> ingredients;
     private Map<String, String> basicInfoMap;
     private String methodology;

@@ -1,7 +1,5 @@
 package com.halfkiloofcarrots.recipepuller.service.aniagotuje;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.halfkiloofcarrots.recipepuller.model.dto.RecipeData;
 import com.halfkiloofcarrots.recipepuller.model.dto.record.RecipeDataDTO;
 import com.halfkiloofcarrots.recipepuller.service.aniagotuje.parser.AniaRecipeHtmlParser;
@@ -11,9 +9,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;

@@ -7,14 +7,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
@@ -25,14 +22,18 @@ import java.util.Set;
 public class AniaApiStub {
 
     private final FetchRecipeService recipeService;
+    private final FetchSlugsService slugsService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Scheduled(fixedDelay = 10000000)
     public void fetchUpdatedRecipes() throws IOException {
-        String slugsString = loadSlugs("SlugErrorJson.json");
-        Set<String> slugs = objectMapper.readValue(slugsString, new TypeReference<>() {
-        });
-        List<RecipeData> recipes = recipeService.fetchRecipe(slugs);
+
+        Set<String> strings = slugsService.fetchSlugs();
+        String jsonSlug = objectMapper.writeValueAsString(strings);
+//        String slugsString = loadSlugs("SlugErrorJson.json");
+//        Set<String> slugs = objectMapper.readValue(slugsString, new TypeReference<>() {
+//        });
+        List<RecipeData> recipes = recipeService.fetchRecipe(strings);
         String recipesJson = objectMapper.writeValueAsString(recipes);
         log.info("Fetched from fetchUpdatedRecipes: " + recipesJson);
     }

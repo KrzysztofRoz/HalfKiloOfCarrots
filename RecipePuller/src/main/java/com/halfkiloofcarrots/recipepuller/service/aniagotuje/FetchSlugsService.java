@@ -1,10 +1,7 @@
 package com.halfkiloofcarrots.recipepuller.service.aniagotuje;
 
-import ch.qos.logback.core.util.TimeUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.halfkiloofcarrots.recipepuller.model.dto.record.TagDto;
 import com.halfkiloofcarrots.recipepuller.model.dto.record.TagListDto;
-import com.halfkiloofcarrots.recipepuller.service.aniagotuje.parser.AniaRecipeHtmlParser;
 import com.halfkiloofcarrots.recipepuller.service.aniagotuje.parser.AniaTagsHtmlParser;
 import com.halfkiloofcarrots.recipepuller.util.SleepUtil;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +15,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Slf4j
