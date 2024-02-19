@@ -11,7 +11,6 @@ public interface AniaProxy {
     @GetMapping("/client/post/{recipeName}")
      RecipeDataDTO getRecipe(@PathVariable String recipeName);
 
-    @GetMapping("/client/posts/search?categories=&diets=&occasions=&tags={tag}&page={pageNumber}&size=10&sort=publish,desc")
-    TagListDto getRecipeByTag(@PathVariable String tag,
-                              @PathVariable Integer pageNumber);
+    @GetMapping("/client/posts/search?categories=&subCategories=&diets=&occasions=&tags=&ideas=&perPage=12&page={pageNumber}&sort=publish,desc")
+    TagListDto getRecipeByTag(@PathVariable Integer pageNumber);
 }

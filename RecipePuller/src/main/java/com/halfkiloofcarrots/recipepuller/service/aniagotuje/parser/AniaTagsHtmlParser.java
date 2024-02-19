@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 
 import java.util.List;
 
+@Deprecated
 public class AniaTagsHtmlParser {
 
     public static List<String> parseTags(String html) {
