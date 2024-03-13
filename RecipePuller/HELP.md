@@ -1,5 +1,9 @@
 # Getting Started
 
+### DOCKER START
+### docker run -e POSTGRES_PASSWORD=1234 -p 54321:5432 -d 69e765e8cdbe
+
+
 ### Reference Documentation
 For further reference, please consider the following sections:
 
