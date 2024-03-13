@@ -12,29 +12,20 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-
-
 @Entity
-@Table(name = "recipe_data")
+@Table(name = "ingredient")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RecipeDataEntity {
-    // GenerationType.SEQUENC or IDENTITY ??
-    // konstruktor
-
+public class IngredientEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recipe_data_id_seq")
-    @SequenceGenerator(name = "recipe_data_id_seq", sequenceName = "recipe_data_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ingredient_id_seq")
+    @SequenceGenerator(name = "ingredient_id_seq", sequenceName = "ingredient_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "image_source", nullable = false)
-    private String imageSource;
-
-    @Column(name = "recipe_data_id")
-    private String recipeDataId;
+    @Column(name = "value", nullable = false)
+    private String value;
 
 }
