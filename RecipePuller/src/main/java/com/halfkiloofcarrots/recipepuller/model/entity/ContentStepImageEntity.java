@@ -25,7 +25,7 @@ public class ContentStepImageEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_step_image_id_seq")
     @SequenceGenerator(name = "content_step_image_id_seq", sequenceName = "content_step_image_id_seq", allocationSize = 1)
     private Long id;
-    @Column(name = "source")
-    private String source;
+    @Column(name = "image_source")
+    private String imageSource;
 
 }

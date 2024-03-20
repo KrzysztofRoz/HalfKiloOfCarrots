@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -13,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 
 
 @Entity
@@ -23,18 +26,34 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecipeDataEntity {
-    // GenerationType.SEQUENC or IDENTITY ??
-    // konstruktor
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recipe_data_id_seq")
     @SequenceGenerator(name = "recipe_data_id_seq", sequenceName = "recipe_data_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "image_source", nullable = false)
-    private String imageSource;
+    @Column(name = "slug", nullable = false)
+    private String slug;
 
-    @Column(name = "recipe_data_id")
-    private String recipeDataId;
+    @Column(name = "recipe_header_title", nullable = false)
+    private String recipeHeaderTitle;
 
+    @Column(name = "methodology")
+    private String methodology;
+
+    @OneToMany
+    @JoinColumn(name = "recipe_data_id")
+    private List<HeaderImageEntity> headerImages;
+
+    @OneToMany
+    @JoinColumn(name = "recipe_data_id")
+    private List<IngredientEntity> ingredients;
+
+    @OneToMany
+    @JoinColumn(name = "recipe_data_id")
+    private List<BasicInfoEntity> basicInfoList;
+
+    @OneToMany
+    @JoinColumn(name = "recipe_data_id")
+    private List<ContentStepEntity> contentSteps;
 }
