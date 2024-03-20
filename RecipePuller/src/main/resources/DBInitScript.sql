@@ -1,6 +1,7 @@
 CREATE TABLE recipe_data
 (
     id BIGSERIAL primary key,
+    slug VARCHAR not null,
     recipe_header_title VARCHAR not null,
     methodology VARCHAR
 );
@@ -42,7 +43,7 @@ CREATE TABLE content_step
 CREATE TABLE content_step_image
 (
     id BIGSERIAL primary key,
-    source VARCHAR,
+    image_source VARCHAR,
     content_step_id BIGSERIAL,
     foreign key(content_step_id) references content_step(id)
 );
