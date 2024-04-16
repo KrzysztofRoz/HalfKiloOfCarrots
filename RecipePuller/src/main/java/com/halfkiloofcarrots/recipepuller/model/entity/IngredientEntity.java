@@ -25,7 +25,9 @@ public class IngredientEntity {
     @SequenceGenerator(name = "ingredient_id_seq", sequenceName = "ingredient_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "value", nullable = false)
+    @Column(name = "value")
     private String value;
 
+    @Column(name = "recipe_data_id")
+    private Long recipeDataId;
 }

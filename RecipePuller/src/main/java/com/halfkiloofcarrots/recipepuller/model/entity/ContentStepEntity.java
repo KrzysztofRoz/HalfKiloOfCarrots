@@ -1,5 +1,6 @@
 package com.halfkiloofcarrots.recipepuller.model.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,16 +26,22 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContentStepEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_step_id_seq")
     @SequenceGenerator(name = "content_step_id_seq", sequenceName = "content_step_id_seq", allocationSize = 1)
     private Long id;
+
     @Column(name = "title")
     private String title;
+
     @Column(name = "instruction")
     private String instruction;
 
-    @OneToMany
+    @Column(name = "recipe_data_id")
+    private Long recipeDataId;
+
+    @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "content_step_id")
     private List<ContentStepImageEntity> contentStepImages;
 }
