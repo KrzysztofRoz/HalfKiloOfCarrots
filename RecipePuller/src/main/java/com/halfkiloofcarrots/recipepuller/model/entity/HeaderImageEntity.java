@@ -25,6 +25,9 @@ public class HeaderImageEntity {
     @SequenceGenerator(name = "header_image_id_seq", sequenceName = "header_image_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "image_source", nullable = false)
+    @Column(name = "image_source")
     private String imageSource;
+
+    @Column(name = "recipe_data_id")
+    private Long recipeDataId;
 }

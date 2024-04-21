@@ -32,4 +32,6 @@ public class BasicInfoEntity {
     @Column(name = "value")
     private String value;
 
+    @Column(name = "recipe_data_id")
+    private Long recipeDataId;
 }

@@ -1,5 +1,6 @@
 package com.halfkiloofcarrots.recipepuller.model.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,19 +42,19 @@ public class RecipeDataEntity {
     @Column(name = "methodology")
     private String methodology;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "recipe_data_id")
     private List<HeaderImageEntity> headerImages;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "recipe_data_id")
     private List<IngredientEntity> ingredients;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "recipe_data_id")
     private List<BasicInfoEntity> basicInfoList;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "recipe_data_id")
     private List<ContentStepEntity> contentSteps;
 }

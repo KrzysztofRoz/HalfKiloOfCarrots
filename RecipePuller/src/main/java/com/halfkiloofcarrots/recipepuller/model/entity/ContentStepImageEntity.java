@@ -27,5 +27,6 @@ public class ContentStepImageEntity {
     private Long id;
     @Column(name = "image_source")
     private String imageSource;
-
+    @Column(name = "content_step_id")
+    private Long contentStepId;
 }
