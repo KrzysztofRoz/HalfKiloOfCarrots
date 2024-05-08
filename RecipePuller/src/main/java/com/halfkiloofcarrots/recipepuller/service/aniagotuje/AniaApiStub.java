@@ -48,9 +48,9 @@ public class AniaApiStub {
 
     public void fetchUpdatedRecipes() throws IOException {
 
-//        Set<String> strings = slugsService.fetchSlugs();
-//        String jsonSlug = objectMapper.writeValueAsString(strings);
-        String slugsString = loadSlugs("Slugs.json");
+        Set<String> strings = slugsService.fetchSlugs();
+        String slugsString = objectMapper.writeValueAsString(strings);
+//        String slugsString = loadSlugs("Slugs.json");
         Set<String> slugs = objectMapper.readValue(slugsString, new TypeReference<>() {
         });
         List<RecipeData> recipes = recipeService.fetchRecipe(slugs);

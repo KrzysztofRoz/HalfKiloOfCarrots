@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-root',
@@ -10,9 +9,6 @@ import {HttpClient} from "@angular/common/http";
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-
-  constructor(public http: HttpClient) {
-  }
 
   title = 'RecipeApp';
 }
